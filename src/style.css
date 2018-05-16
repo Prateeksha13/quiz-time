@@ -1,0 +1,23 @@
+.question-description-container {
+    margin: 20px;
+}
+
+.question-description {
+    background: #ffe467;
+}
+
+.select-field {
+    margin-left: 20px;
+}
+
+.action-buttons-container {
+    text-align: center;
+}
+
+.main-container {
+    display: flex;
+}
+
+.flex-one {
+    flex: 1;
+}
