@@ -47,6 +47,11 @@
   }
   .question-card {
     margin: auto;
-    width: 200px;
+    width: 250px;
+    margin-bottom: 10px;
+  }
+  .action-buttons-container {
+    text-align: center;
+    padding-top: 20px;
   }
 }
