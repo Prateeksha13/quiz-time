@@ -8,17 +8,18 @@ import React from "react";
 import ResultRenderer from "./resultRenderer";
 import axios from "axios";
 
-class Form extends React.Component {
+class QuizForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      chartData: null,
+      resultData: null,
       data: null,
       selectedOptions: null,
       incorrectAnswers: [],
       isFormValid: true,
       notAnswered: []
     };
+    this.state.dataURL = "/data.json";
     this.styles = {
       actionButton: {
         marginLeft: 20
@@ -32,19 +33,25 @@ class Form extends React.Component {
   }
 
   componentDidMount() {
-    axios.get("/data.json").then(res => {
+    axios.get(this.state.dataURL).then(res => {
       let selectedOptions = res.data.questions.map((value, index) => null);
       this.setState({ data: res.data, selectedOptions: selectedOptions });
     });
   }
 
+  /**
+   * Store selected option by the user with respective question ID
+   *
+   * @param {integer} id
+   * @param {integer} value
+   */
   setResult(id, value) {
     let selectedOptions = this.state.selectedOptions;
     selectedOptions[id] = value;
     this.setState({ selectedOptions: selectedOptions });
   }
 
-  fetchForm() {
+  fetchQuizForm() {
     var that = this;
     return this.state.data.questions.map((question, index) => {
       let errorText = null;
@@ -69,6 +76,11 @@ class Form extends React.Component {
     });
   }
 
+  /**
+   * Verify if all questions are answered.
+   * Display suitable error message if any question is unanswered.
+   * Display results and highlight incorrect answers if all questions are answered.
+   */
   onSubmit() {
     let isFormValid = true,
       notAnswered = [];
@@ -78,50 +90,34 @@ class Form extends React.Component {
         notAnswered.push(index);
       }
     }
-    this.setState({
-      isFormValid: isFormValid,
-      notAnswered: notAnswered
-    });
     if (isFormValid) {
       let incorrectAnswers = [],
-        correctAnswers = 0;
+        numCorrectAnswers = 0;
       for (let [index, question] of this.state.data.questions.entries()) {
         if (question.correct_option === this.state.selectedOptions[index]) {
-          correctAnswers += 1;
+          numCorrectAnswers += 1;
         } else {
           incorrectAnswers.push(index);
         }
       }
-      let chartData = {
-        labels: ["Correct Answers", "Incorrect Answers"],
-        datasets: [
-          {
-            label: "Quiz Results",
-            backgroundColor: [
-              "rgba(146, 192, 104, 0.9)",
-              "rgba(226, 64, 64, 0.9)"
-            ],
-            borderWidth: 1,
-            hoverBackgroundColor: [
-              "rgba(146, 192, 104, 0.6)",
-              "rgba(226, 64, 64, 0.6)"
-            ],
-            data: [correctAnswers, incorrectAnswers.length]
-          }
-        ]
-      };
       this.setState({
-        chartData: chartData,
-        incorrectAnswers: incorrectAnswers,
-        correctAnswers: correctAnswers
+        resultData: [numCorrectAnswers, incorrectAnswers.length],
+        incorrectAnswers: incorrectAnswers
       });
     }
+    this.setState({
+      isFormValid: isFormValid,
+      notAnswered: notAnswered
+    });
   }
 
+  /**
+   * Reset all states
+   */
   onClear() {
     this.setState({
       selectedOptions: this.state.data.questions.map((value, index) => null),
-      chartData: null,
+      resultData: null,
       notAnswered: [],
       incorrectAnswers: [],
       isFormValid: true
@@ -136,7 +132,7 @@ class Form extends React.Component {
       <div className="main-container">
         <div className="question-container flex-one">
           <div className="form-title">{this.state.data.form_title}</div>
-          {this.fetchForm()}
+          {this.fetchQuizForm()}
           <div className="action-buttons-container">
             <RaisedButton
               label="Submit"
@@ -154,9 +150,9 @@ class Form extends React.Component {
             />
           </div>
         </div>
-        {this.state.chartData ? (
+        {this.state.resultData ? (
           <div className="chart-container">
-            <ResultRenderer chartData={this.state.chartData} />
+            <ResultRenderer resultData={this.state.resultData} />
           </div>
         ) : null}
       </div>
@@ -164,4 +160,4 @@ class Form extends React.Component {
   }
 }
 
-export default Form;
+export default QuizForm;
