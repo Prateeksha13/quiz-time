@@ -1,0 +1,45 @@
+{
+    "form_title": "Brain it On",
+    "questions": [
+      {
+        "description": "What are the keys Ctrl, Shift and Alt called ?",
+        "options": [
+          "Modifiers",
+          "Function",
+          "Alphanumeric",
+          "Adjustment"
+        ],
+        "correct_option": 1
+      },
+      {
+        "description": "The common name for the crime of stealing passwords is known as _________.",
+        "options": [
+          "Spooling",
+          "Identity theft",
+          "Spoofing",
+          "Hacking"
+        ],
+        "correct_option": 3
+      },
+      {
+        "description": "What is the unit of speed used for super computer ?",
+        "options": [
+          "KELOPS",
+          "GELOPS",
+          "MELOPS",
+          "None of these"
+        ],
+        "correct_option": 2
+      },
+      {
+        "description": "In which of the following form, data is stored in computer ?",
+        "options": [
+          "Decimal",
+          "Binary",
+          "HexaDecimal",
+          "Octal"
+        ],
+        "correct_option": 2
+      }
+    ]
+  }

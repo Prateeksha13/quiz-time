@@ -19,29 +19,22 @@ class QuestionRenderer extends React.Component {
         return optionsHTML;
     }
 
-    fetchQuestion() {
+    render() {
         return (
-            <Card className="question-description-container">
-                <CardTitle className="question-description">{
-                    this.props.question.description}
+            <Card className="question-card">
+                <CardTitle className="question-description">
+                    {this.props.question.description}
                 </CardTitle>
                 <SelectField
                     className="select-field"
                     hintText="Select an option"
+                    errorText={this.props.errorText}
                     value={this.props.value}
                     onChange={this.onChange.bind(this)}
                 >
                     {this.fetchOptions()}
                 </SelectField>
             </Card>
-        );
-    }
-
-    render() {
-        return (
-            <div>
-                {this.fetchQuestion()}
-            </div>
         );
     }
 }
